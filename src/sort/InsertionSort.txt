@@ -1,0 +1,80 @@
+package sort;
+
+/**
+ * @ProjectName: structure
+ * @Package: sort
+ * @ClassName: InsertionSort
+ * @Author: zwj
+ * @Description: 注释 插入排序
+ * @Date: 2019/10/22 14:17
+ * @Version: 1.0
+ */
+public class InsertionSort {
+
+
+    /**
+    *描述
+    *@Param arrs 数组,n 数组大小
+    *@Return
+    *@Author zwj
+    *@Date 2019/10/22
+    *@Time 14:25
+    *version 1.0
+    */
+    public void sort(int[]arrs,int n){
+        if(n<=1)return;
+        for(int i = 1;i<n;++i){
+            int value = arrs[i];
+            int j = i-1;
+            for(;j>=0;j--){ // j循环后会变成-1,这时不满足条件了。
+                if(arrs[j]>value){
+                    arrs[j+1] = arrs[j]; // 数据移动
+                }else{
+                    break;
+                }
+            }
+            arrs[j+1] = value; // 插入数据
+        }
+    }
+
+    /**
+    *描述  插入值排序
+    *@Param
+    *@Return
+    *@Author zwj
+    *@Date 2019/10/22
+    *@Time 15:09
+    *version 1.0
+    */
+    public int[] sort1(int[]arrs,int n,int value){
+        int[] a = new int[10];
+        System.arraycopy(arrs,0,a,0,n);
+        for(int i = n-1;i>=0;i--){
+            if(value >=a[i]){
+                for(int j = n;j>i;j--){ // 向后移动
+                    a[j] = a[j-1];
+                }
+                a[i+1] = value; // 插入数据
+                break; // 当发现第一个小于value的值时，就退出因为前面的值都小于他
+            }
+        }
+        return a;
+    }
+
+    public static void main(String[] args) {
+        int j;
+        for(j = 1;j>=0;j--){
+            System.out.println(j);
+        }
+        System.out.println("*****"+j);
+
+        int[]arrs = new int[]{2,3,1,5,6,5,8};
+        int[] a = new int[10];
+        System.arraycopy(arrs,0,a,0,7);
+        StringBuffer sbf = new StringBuffer();
+        for(int arr:arrs){
+            sbf.append(arr).append(" ");
+        }
+        System.out.println(sbf.toString());
+    }
+}

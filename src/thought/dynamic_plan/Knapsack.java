@@ -1,0 +1,102 @@
+package thought.dynamic_plan;
+
+/**
+ * @ProjectName: structure
+ * @Package: thought.dynamic_plan
+ * @ClassName: Knapsack
+ * @Author: zwj
+ * @Description: 注释 0-1背包问题
+ * @Date: 2019/11/5 14:20
+ * @Version: 1.0
+ */
+public class Knapsack {
+
+    /**
+     *
+     * @param weight 物品重量
+     * @param n      物品个数
+     * @param w      背包可承受重量
+     * @return
+     */
+    public int knapsack(int[]weight,int n,int w){
+        boolean[][]states = new boolean[n][w+1]; // 默认值false
+        states[0][0] = true; // 第一行特殊处理，使用哨兵优化
+        if(weight[0] <= w){
+            states[0][weight[0]] = true;
+        }
+        for(int i = 1;i<n;++i){ //动态规划状态转移
+            for(int j = 0;j<=w;++j){ //不把第i个物品放入背包
+                if(states[i-1][j] == true) states[i][j] = states[i-1][j]; // 这时因为不放入i物品，所以不需要+第i-1个物品,只需要相同重量的情况
+            }
+            for(int j = 0;j<= w-weight[i];++j){ // 把第i个物品放入背包
+                if(states[i-1][j] == true) states[i][j+weight[i]] = true; // 保证第i个物品的重量+(i-1)个物品的重量
+            }
+        }
+        for(int i = w;i>=0;--i){ // 输出结果
+            if(states[n-1][i] == true) return i; // 输出最后一个物品，且最后的重量
+        }
+        return 0;
+    }
+
+
+    public int knapsack2(int[]items,int n,int w){
+        boolean[]states = new boolean[w+1]; // 默认值false
+        states[0] = true; // 第一行数据特殊处理，使用哨兵优化
+        if(items[0]<=w){
+            states[items[0]] = true;
+        }
+
+        for(int i = 1;i<n;++i){
+            for(int j = w-items[i];j>0;--j){ // 把第i个物品放入背包
+                if(states[j]==true)states[j+items[i]]=true;
+            }
+//            for(int j = 0;j<w-items[i];++j){ // 把第i个物品放入背包，会重复计算，正常情况下只有states[0,2,5,7]状态为true
+//                if(states[j]==true)states[j+items[i]]=true;
+//            }
+        }
+
+        for(int i=w;i>=0;--i){
+            if(states[i]==true)return i;
+        }
+        return 0;
+    }
+
+
+    /**
+     *
+     * @param items 商品价格
+     * @param n 商品个数
+     * @param w 满减条件 如:200
+     * @return
+     */
+    public void doublelladvance(int[]items,int n,int w){
+        boolean[][]states = new boolean[n][3*w+1]; // 超过3倍就没有价值了(满200减，如果都消费超过600了，减也没意义)
+        states[0][0] = true; // 第一行特殊处理，使用哨兵优化
+        if(items[0] <= 3*w){
+            states[0][items[0]] = true;
+        }
+        for(int i = 1;i<n;++i){ //动态规划状态转移
+            for(int j = 0;j<=3*w;++j){ //不购买第i个产品
+                if(states[i-1][j] == true) states[i][j] = states[i-1][j];
+            }
+            for(int j = 0;j<= 3*w-items[i];++j){ //购买第i个产品,所以需要+第i-1个产品
+                if(states[i-1][j] == true) states[i][j+items[i]] = true;
+            }
+        }
+        int j;
+        for(j = w;j<3*w+1;++j){ // 输出结果
+            if(states[n-1][j] == true) break; // 输出结果大于w的最小值
+        }
+        if(j==3*w+1)return; // 没有结果(消费超过了3倍)
+        for(int i = n-1;i>=1;--i){ // i:二维数组的行,j:二维数组的列
+            if(j-items[i]>=0 && states[i-1][j-items[i]] == true){ // 因为如果购买了第i个商品，会做这个操作[i][j+items[i]]
+                System.out.print(items[i]+" "); // 购买了这个商品
+                j = j-items[i];
+            }// else 没有购买这个商品，j不变
+        }
+        if(j!=0){
+            System.out.println(items[0]);
+        }
+    }
+
+}

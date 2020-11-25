@@ -1,0 +1,28 @@
+package stack.leetcode;
+
+/**
+ * @ProjectName: structure
+ * @Package: stack.leetcode
+ * @ClassName: Main
+ * @Author: zwj
+ * @Description: 注释
+ * @Date: 2019/10/17 17:00
+ * @Version: 1.0
+ */
+public class Main {
+
+    public static void main(String[] args) {
+        // 1:有效括号
+//        IsValidBracket isValidBracket = new IsValidBracket();
+//        System.out.println(isValidBracket.isValid("(([))"));
+
+        // 2: 最长有效括号
+//        LongestValidBracket longestValidBracket = new LongestValidBracket();
+//        System.out.println(longestValidBracket.longestValidParentheses("()(((()))"));
+
+        // 3: 逆波兰表达式
+        EvalRPN evalRPN = new EvalRPN();
+        String[]tokens = new String[]{"4", "13", "5", "/", "+"};
+        System.out.println(evalRPN.evalRPN(tokens));
+    }
+}

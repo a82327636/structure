@@ -1,0 +1,72 @@
+package sort;
+
+/**
+ * @ProjectName: structure
+ * @Package: sort
+ * @ClassName: Main
+ * @Author: zwj
+ * @Description: 注释
+ * @Date: 2019/10/21 14:39
+ * @Version: 1.0
+ */
+public class Main {
+
+    // 1: 实现归并排序、快速排序、插入排序、冒泡排序、选择排序 (基于比较的排序)
+    // 2: 编程实现O(n)时间复杂度内找到一组数据的第K大元素
+    // 3: 实现桶排序、计数排序、基数排序 （不是基于比较的线性排序，但是对使用场景比较苛刻）
+
+    public static void main(String[] args) {
+
+        // 1.1 冒泡排序
+//        BubblingSort bubblingSort = new BubblingSort();
+//        int[]arrs = new int[]{2,3,1,5,6,5,8};
+//        bubblingSort.sort(arrs,7); // 从低到高排序
+//        // bubblingSort.sort1(arrs,7);// 从高到低排序
+//
+
+        // 1.2 插入排序
+//        InsertionSort insertionSort = new InsertionSort();
+//        int[]arrs = new int[]{2,3,1,5,6,5,8};
+//        insertionSort.sort(arrs,7); // 排序数组
+//        int[] rattrs = insertionSort.sort1(arrs,7,4); // 插入新数据
+
+
+        // 1.3 选择排序
+//        SelectionSort selectionSort = new SelectionSort();
+//        int[]arrs = new int[]{2,3,1,5,6,5,8};
+//        selectionSort.sort(arrs,7);
+
+        // 1.4 归并排序
+//        MergeSort mergeSort = new MergeSort();
+//        int[]arrs = new int[]{2,3,1,5,6,5,8};
+//        mergeSort.merge_sort(arrs,7);
+
+        // 1.5 快速排序
+//        QuickSort quickSort = new QuickSort();
+//        int[]arrs = new int[]{2,3,1,5,6,5,8};
+//        quickSort.quickSort(arrs,7);
+//
+//        StringBuffer sbf = new StringBuffer();
+//        for(int arr:arrs){
+//            sbf.append(arr).append(" ");
+//        }
+//        System.out.println(sbf.toString());
+
+
+        // 2.0 编程实现O(n)时间复杂度内找到一组数据的第K大元素
+//        SearchK searchK = new SearchK();
+//        int[]arrs = new int[]{2,3,5,1,6,5,8};
+//        searchK.search(arrs,7,5);
+
+        // 3.0 计数排序
+        CountingSort countingSort = new CountingSort();
+        int[]arrs = new int[]{2,5,3,0,2,3,0,3};
+        countingSort.countingSort(arrs,8);
+        StringBuffer sbf = new StringBuffer();
+        for(int arr:arrs){
+            sbf.append(arr).append(" ");
+        }
+        System.out.println(sbf.toString());
+
+    }
+}

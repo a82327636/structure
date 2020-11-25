@@ -1,0 +1,151 @@
+package binary_search.leetcode;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+/**
+ * @ProjectName: structure
+ * @Package: binary_search.leetcode
+ * @ClassName: MySqrt
+ * @Author: zwj
+ * @Description: 注释  求平方根
+ * @Date: 2019/10/24 14:25
+ * @Version: 1.0
+ */
+public class MySqrt {
+
+
+    public static void main(String[] args)
+    {
+        System.out.println(sqrt_search1(3));
+        System.out.println(1.0/100);
+        System.out.println(get5(1.71531,2));
+    }
+
+    public static double mySqrt(int x) {
+        double mid = (double)x / 2;
+        double right = x;
+        double left=0;
+        while ((int)left<(int)right)
+        {
+            if (mid*mid > x)
+            {
+                right = mid;
+                mid = (double)(right + left) / 2;
+            }
+            else
+            {
+                left = mid;
+                mid = (double)(right + left) / 2;
+            }
+        }
+        return mid;
+    }
+
+    public static long mySqrt1(int x) {
+        long left = 0;
+        long right = Integer.MAX_VALUE;
+        while (left < right) {
+            // 这种取中位数的方法又快又好，是我刚学会的，原因在下面这篇文章的评论区
+            // https://www.liwei.party/2019/06/17/leetcode-solution-new/search-insert-position/
+            // 注意：这里得用无符号右移
+            long mid = (left + right + 1) >>> 1;
+            // 无符号右移1位，相当于/2，为什么是无符号右移，因为这样不需要高位保持1
+            // （如果left+right是int的边界值，如果不是无符号右移，就需要变为long型，因为要保持高位补1）
+            long square = mid * mid;
+            if (square > x) {
+                right = mid - 1;
+            } else {
+                left = mid;
+            }
+        }
+        return left;
+    }
+
+
+    /**
+     *   使用二分查找实现平方根函数，要求精确到小数点后6位
+     *   -1e-6 是-1*10^-6次方 1000000
+     *   le-6 是1*10^-6次方 0.000001
+     *   因为要小数点后6位，所以需要至少比较6次
+     *
+     *
+     *   【 ** 而且没有确定值，只有无限逼近的值 **   】
+     */
+    public static float sqrt_search(float n) {
+        float mid = 0.0f;
+        if (n < -1e-3) {
+            // 小于0，抛异常
+            throw new IllegalArgumentException();
+        } else if (Math.abs(n) >= -1e-3 && Math.abs(n) <= 1e-3) {
+            return mid;
+        } else {
+            // 逐次逼近，默认平方根的不会超过n的一半
+            float high = n / 2.0f;
+            float low = 0.0f;
+            while (Math.abs(high - low) > 1e-1) { // 当小于0.000001时，退出循环
+                // 首先找到中间值
+                mid = low + (high - low) / 2;
+                float tmp = mid * mid;
+                // 比较并更新 high和low
+                if ((tmp - n) > 1e-1) {
+                    high = mid;
+                } else if ((tmp - n) < -1e-1) {
+                    low = mid;
+                } else {
+                    return mid;
+                }
+            }
+        }
+        return mid; // 最终的值是循环6次后最逼近的值,很多数都是无理数，所以是可以一直循环下去的
+    }
+
+
+    public static double sqrt_search1(int n) {
+        // 获取到整数的值
+        double mid = mySqrt1(n);
+        /**
+         *
+         * 核心算法：
+         * 每一个小数位，找出中间值然后加上之前的值，算平方数大小，获取小于给定值的最大开方值,然后继续循环下一位
+         *
+         */
+        double pos = 1; // (pos=1.0)
+        for(int i = 0;i<6;i++){ // 小数点后6位
+            int low = 0;
+            int high = 9;
+            pos = pos/10; // 小数点后移1位(0.1)
+                while(low < high){
+                    int mid1 = (low+high)>>1;
+                    double val = get5(mid+mid1*pos,i+1);
+                    if(val*val == n){
+                        mid = val;
+                        break;
+                    }else if(val * val < n){
+                        double val1 = val+1*pos;
+                        if(val1 * val1 > n){ // 加1后测试
+                            mid = val;
+                            break;
+                        }
+                        low = mid1;
+                    }else{
+                        double val1 = val-1*pos;
+                        if(val1 * val1 < n){ // 后减1后测试
+                            mid = val1;
+                            break;
+                        }
+                        high = mid1;
+                    }
+                }
+            }
+        return mid;
+    }
+
+
+    private static double get5(double dSource,int n){
+        System.out.println(String.valueOf(dSource).indexOf(".")+n+1);
+        return Double.parseDouble(String.valueOf(dSource)
+                .substring(0,String.valueOf(dSource).indexOf(".")+n+1));
+    }
+
+}
